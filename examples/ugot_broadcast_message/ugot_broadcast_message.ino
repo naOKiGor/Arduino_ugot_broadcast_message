@@ -2,10 +2,8 @@
 #include <WiFi.h>
 #include <ugot_broadcast_message.h>
 
-// const char* ssid = "REPLACE_WITH_YOUR_SSID";
-// const char* password = "REPLACE_WITH_YOUR_PASSWORD";
-const char* ssid = "UBT-Robot";
-const char* password = "ubtubtubt";
+const char* ssid = "REPLACE_WITH_YOUR_SSID";
+const char* password = "REPLACE_WITH_YOUR_PASSWORD";
 
 static uGotBroadcastChannel channel;
 
