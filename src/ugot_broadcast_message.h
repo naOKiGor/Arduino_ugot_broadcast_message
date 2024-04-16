@@ -27,7 +27,11 @@ public:
 
 public:
 	bool sendBroadcastMessage(const char* message) {
-		return sendBroadcastMessageImpl(message);
+		return sendMessageImpl(message);
+	}
+	
+	bool sendMessageTo(const char* message, const char* addr) {
+		return sendMessageImpl(message, addr);
 	}
 
 	void setMessageReceivedCallback(std::function<void(const char*)> callback) {
@@ -99,7 +103,7 @@ protected:
         return (crc ^ 0x55) & 0xFF;
 	}
 	
-	bool sendBroadcastMessageImpl(const char* message) {
+	bool sendMessageImpl(const char* message, const char* addr = nullptr) {
 		if(!enable) return false;
 		
 		uint8_t buffer[128] = {0};
@@ -136,7 +140,13 @@ protected:
 		memcpy(&buffer[3 + header_size], payload_buffer, payload_size);
 		buffer[3 + header_size + payload_size] = crc_checksum(payload_buffer, 0, payload_size);
 		
-		udp.broadcastTo(buffer, 4 + header_size + payload_size, getPort());
+		if(addr == nullptr) {
+			udp.broadcastTo(buffer, 4 + header_size + payload_size, getPort());
+		} else {
+			IPAddress target = IPAddress();
+			target.fromString(addr);
+			udp.writeTo(buffer, 4 + header_size + payload_size, target, getPort());
+		}
 		
 		return true;
 	}
