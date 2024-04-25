@@ -29,7 +29,7 @@ void setup() {
   Serial.printf("WiFi connected, IP address: %s\n", WiFi.localIP().toString().c_str());
 
   // Optional set communication channel, default is 0
-  // channel.setChannel(0);
+  channel.setChannel(0);
 
   // Enable broadcast funtion, default is off
   channel.setEnable(true);
@@ -45,4 +45,7 @@ void loop() {
 
   // Send broadcast to current channel
   channel.sendBroadcastMessage("Hello world");
+
+	// Send unicast message to specify address
+	channel.sendMessageTo("Hello world", "10.11.12.13");
 }
